@@ -1,23 +1,53 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import Login from "./pages/Login";
+import Feed from "./pages/Feed";
 
 function App() {
-  const [data, setData] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    fetch("https://fastapi-blog-backend-2y9w.onrender.com/users")
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        setData(data);
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
+
+    // 🔥 Verify token with backend
+    fetch("https://fastapi-blog-backend-2y9w.onrender.com/users/me", {
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
+      .then(res => {
+        if (res.ok) {
+          setIsLoggedIn(true);
+        } else {
+          localStorage.removeItem("token");
+          setIsLoggedIn(false);
+        }
+      })
+      .catch(() => {
+        localStorage.removeItem("token");
+        setIsLoggedIn(false);
       });
   }, []);
 
   return (
     <div>
-      <h1>Users</h1>
-      {data.map(user => (
-        <p key={user.id}>{user.name} - {user.email}</p>
-      ))}
+      {isLoggedIn ? (
+        <Feed />
+      ) : (
+        <Login setIsLoggedIn={setIsLoggedIn} />
+      )}
+
+      {isLoggedIn && (
+        <button
+          onClick={() => {
+            localStorage.removeItem("token");
+            setIsLoggedIn(false);
+          }}
+        >
+          Logout
+        </button>
+      )}      
     </div>
   );
 }
