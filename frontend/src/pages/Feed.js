@@ -23,10 +23,10 @@ function Feed() {
     fetchPosts();
   };
 
-  const handleLike = async (post_id) => {
+  const handleLike = async (postId) => {
     const token = localStorage.getItem("token");
 
-    await fetch(`https://fastapi-blog-backend-2y9w.onrender.com/likes/${post_id}`, {
+    await fetch(`https://fastapi-blog-backend-2y9w.onrender.com/likes/${postId}`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + token
