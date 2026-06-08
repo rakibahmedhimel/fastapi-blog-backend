@@ -6,10 +6,12 @@ class PostCreate(BaseModel):
     content : str
 
 class PostOut(BaseModel):
-    title : str
-    content : str
-    owner : UserOut
-    
+    id: int
+    title: str
+    content: str
+    user_id: int
+    likes: int
+
     class Config:
         orm_mode = True 
 
