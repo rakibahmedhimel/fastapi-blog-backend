@@ -10,10 +10,11 @@ class PostOut(BaseModel):
     title: str
     content: str
     user_id: int
+    author: str   # ✅ NEW
     likes: int
 
     class Config:
-        orm_mode = True 
+        orm_mode = True
 
 class PostListResponse(BaseModel):
     total : int

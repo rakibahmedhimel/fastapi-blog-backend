@@ -4,7 +4,8 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models import post as models
-from app.models import like as like_model   # ✅ FIXED IMPORT
+from app.models import like as like_model
+from app.models import user as user_model
 from app.schemas.post import PostCreate, PostOut, PostListResponse
 from app.routers.user import get_current_user
 
@@ -19,23 +20,27 @@ def get_all_posts(page: int = 1, limit: int = 10, db: Session = Depends(get_db))
 
     posts = db.query(
         models.Post,
+        user_model.User.name,
         func.count(like_model.Like.post_id).label("likes")
+    ).join(
+        user_model.User, user_model.User.id == models.Post.user_id
     ).outerjoin(
         like_model.Like, like_model.Like.post_id == models.Post.id
     ).group_by(
-        models.Post.id
+        models.Post.id, user_model.User.name
     ).order_by(
         desc(models.Post.id)
     ).offset(skip).limit(limit).all()
 
     result = []
 
-    for post, likes in posts:
+    for post, username, likes in posts:
         result.append({
             "id": post.id,
             "title": post.title,
             "content": post.content,
             "user_id": post.user_id,
+            "author": username,   # ✅ NEW
             "likes": likes
         })
 

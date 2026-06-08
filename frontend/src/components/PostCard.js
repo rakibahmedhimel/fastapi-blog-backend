@@ -9,6 +9,7 @@ function PostCard({ post, onLike }) {
         padding: "10px"
       }}
     >
+      <h4>👤 {post.author}</h4>
       <h3>{post.title}</h3>
       <p>{post.content}</p>
 
