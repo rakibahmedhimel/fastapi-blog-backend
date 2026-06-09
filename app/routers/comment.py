@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models import comment as models, post as post_model
+from app.models import user as user_model
 from app.schemas.comment import CommentCreate, CommentOut
 from app.routers.user import get_current_user
 
@@ -29,11 +30,30 @@ def create_comment(post_id : int, comment : CommentCreate, db: Session = Depends
     return new_comment
 
 
-@router.get("/{post_id}", response_model=list[CommentOut])
-def get_comments(post_id : int, db: Session = Depends(get_db)):
-    comments = db.query(models.Comment).filter(models.Comment.post_id == post_id).all()
+@router.get("/{post_id}")
+def get_comments(post_id: int, db: Session = Depends(get_db)):
 
-    return comments
+    comments = db.query(
+        models.Comment,
+        user_model.User.name
+    ).join(
+        user_model.User, user_model.User.id == models.Comment.user_id
+    ).filter(
+        models.Comment.post_id == post_id
+    ).all()
+
+    result = []
+
+    for comment, username in comments:
+        result.append({
+            "id": comment.id,
+            "content": comment.content,
+            "user_id": comment.user_id,
+            "post_id": comment.post_id,
+            "author": username   # ✅ NEW
+        })
+
+    return result
 
 
 

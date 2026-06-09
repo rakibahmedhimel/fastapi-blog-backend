@@ -8,6 +8,7 @@ class CommentOut(BaseModel):
     content: str
     user_id: int
     post_id: int
+    author: str   # ✅ NEW
 
     class Config:
         from_attributes = True

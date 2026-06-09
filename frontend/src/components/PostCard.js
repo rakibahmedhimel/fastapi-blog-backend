@@ -37,7 +37,7 @@ function PostCard({ post, onLike }) {
       <p>{post.content}</p>
 
       <button onClick={() => onLike(post.id)}>
-        ❤️ Like
+        {post.liked_by_user ? "💔 Unlike" : "❤️ Like"}
       </button>
 
       <p>Likes: {post.likes ?? 0}</p>
@@ -48,7 +48,9 @@ function PostCard({ post, onLike }) {
       <h4>💬 Comments</h4>
 
       {comments.map(c => (
-        <p key={c.id}>• {c.content}</p>
+        <p key={c.id}>
+          <b>{c.author}:</b> {c.content}
+        </p>
       ))}
 
       {/* 🔥 ADD COMMENT */}

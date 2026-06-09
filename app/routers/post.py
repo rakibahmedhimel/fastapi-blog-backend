@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import desc, func
+from sqlalchemy import case, desc, func
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -13,7 +13,7 @@ router = APIRouter(prefix="/posts", tags=["Posts"])
 
 
 @router.get("/", response_model=PostListResponse)
-def get_all_posts(page: int = 1, limit: int = 10, db: Session = Depends(get_db)):
+def get_all_posts(page: int = 1, limit: int = 10, db: Session = Depends(get_db), user_id: int = Depends(get_current_user)):
     skip = (page - 1) * limit
 
     total = db.query(models.Post).count()
@@ -21,7 +21,12 @@ def get_all_posts(page: int = 1, limit: int = 10, db: Session = Depends(get_db))
     posts = db.query(
         models.Post,
         user_model.User.name,
-        func.count(like_model.Like.post_id).label("likes")
+        func.count(like_model.Like.post_id).label("likes"),
+        func.count(
+            case(
+                (like_model.Like.user_id == user_id, 1)
+            )
+        ).label("liked_by_user")
     ).join(
         user_model.User, user_model.User.id == models.Post.user_id
     ).outerjoin(
@@ -34,14 +39,15 @@ def get_all_posts(page: int = 1, limit: int = 10, db: Session = Depends(get_db))
 
     result = []
 
-    for post, username, likes in posts:
+    for post, username, likes, liked_by_user in posts:
         result.append({
             "id": post.id,
             "title": post.title,
             "content": post.content,
             "user_id": post.user_id,
-            "author": username,   # ✅ NEW
-            "likes": likes
+            "author": username,
+            "likes": likes,
+            "liked_by_user": liked_by_user > 0   # ✅ TRUE / FALSE
         })
 
     return {

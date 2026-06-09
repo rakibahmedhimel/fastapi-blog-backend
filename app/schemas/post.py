@@ -10,8 +10,9 @@ class PostOut(BaseModel):
     title: str
     content: str
     user_id: int
-    author: str   # ✅ NEW
+    author: str
     likes: int
+    liked_by_user: bool   
 
     class Config:
         from_attributes = True
