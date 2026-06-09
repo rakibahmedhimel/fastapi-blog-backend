@@ -1,13 +1,13 @@
 from pydantic import BaseModel
-from app.schemas.user import UserOut
 
 class CommentCreate(BaseModel):
-    content : str
-
+    content: str
 
 class CommentOut(BaseModel):
-    content : str
-    user : UserOut
+    id: int
+    content: str
+    user_id: int
+    post_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True

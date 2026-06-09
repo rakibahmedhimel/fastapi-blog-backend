@@ -1,6 +1,6 @@
 from typing import List
 from pydantic import BaseModel
-from app.schemas.user import UserOut
+
 class PostCreate(BaseModel):
     title : str
     content : str
@@ -14,7 +14,7 @@ class PostOut(BaseModel):
     likes: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class PostListResponse(BaseModel):
     total : int
@@ -23,4 +23,4 @@ class PostListResponse(BaseModel):
     data : List[PostOut]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
