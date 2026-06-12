@@ -4,13 +4,16 @@ import Feed from "./pages/Feed";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true); // 🔥 prevent UI flicker
 
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    if (!token) return;
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
-    // 🔥 Verify token with backend
     fetch("https://fastapi-blog-backend-2y9w.onrender.com/users/me", {
       headers: {
         Authorization: "Bearer " + token
@@ -27,8 +30,17 @@ function App() {
       .catch(() => {
         localStorage.removeItem("token");
         setIsLoggedIn(false);
+      })
+      .finally(() => {
+        setLoading(false); // ✅ always stop loading
       });
+
   }, []);
+
+  // 🔥 prevent render before check finishes
+  if (loading) {
+    return <h2>Loading...</h2>;
+  }
 
   return (
     <div>
@@ -47,7 +59,7 @@ function App() {
         >
           Logout
         </button>
-      )}      
+      )}
     </div>
   );
 }

@@ -7,23 +7,29 @@ function PostCard({ post, onLike }) {
   const [newComment, setNewComment] = useState("");
 
   // 🔥 load comments
-  const fetchComments = async () => {
-    const data = await getComments(post.id);
-    setComments(data || []);
-  };
-
   useEffect(() => {
-    fetchComments();
-  }, []);
+    const load = async () => {
+      const data = await getComments(post.id);
+      setComments(data || []);
+    };
 
-  // 🔥 add comment
+    load();
+  }, [post.id]);
+
+
+  // 🔥 add comment (FIXED)
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
 
-    await addComment(post.id, newComment);
-    setNewComment("");
-    fetchComments(); // reload
+    const newC = await addComment(post.id, newComment);
+
+    if (newC) {
+      // ✅ instantly update UI (NO refresh needed)
+      setComments(prev => [...prev, newC]);
+      setNewComment("");
+    }
   };
+
 
   return (
     <div style={{
@@ -42,7 +48,6 @@ function PostCard({ post, onLike }) {
 
       <p>Likes: {post.likes ?? 0}</p>
 
-      {/* 🔥 COMMENTS SECTION */}
       <hr />
 
       <h4>💬 Comments</h4>
@@ -53,9 +58,8 @@ function PostCard({ post, onLike }) {
         </p>
       ))}
 
-      {/* 🔥 ADD COMMENT */}
       <input
-        placeholder="Write a comment..."
+        placeholder="Write comment..."
         value={newComment}
         onChange={(e) => setNewComment(e.target.value)}
       />

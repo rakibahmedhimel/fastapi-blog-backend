@@ -11,23 +11,39 @@ router = APIRouter(prefix="/comments", tags=["Comments"])
 
 
 @router.post("/{post_id}", response_model=CommentOut)
-def create_comment(post_id : int, comment : CommentCreate, db: Session = Depends(get_db), user_id: int = Depends(get_current_user)):
+def create_comment(
+    post_id: int,
+    comment: CommentCreate,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+):
     post = db.query(post_model.Post).filter(post_model.Post.id == post_id).first()
 
     if not post:
         raise HTTPException(status_code=404, detail="Post Not Found")
-    
+
+    # 🔥 create comment
     new_comment = models.Comment(
-        content = comment.content,
-        user_id = user_id,
-        post_id = post_id
+        content=comment.content,
+        user_id=user_id,
+        post_id=post_id
     )
 
     db.add(new_comment)
     db.commit()
     db.refresh(new_comment)
 
-    return new_comment
+    # 🔥 get username (IMPORTANT FIX)
+    user = db.query(user_model.User).filter(user_model.User.id == user_id).first()
+
+    # 🔥 return SAME FORMAT as GET
+    return {
+        "id": new_comment.id,
+        "content": new_comment.content,
+        "user_id": new_comment.user_id,
+        "post_id": new_comment.post_id,
+        "author": user.name
+    }
 
 
 @router.get("/{post_id}")

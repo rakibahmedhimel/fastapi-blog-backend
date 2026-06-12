@@ -13,14 +13,17 @@ function Feed() {
   };
 
   useEffect(() => {
-    fetchPosts();
+    fetchPosts(); // ✅ load posts on page load
   }, []);
 
   const handleCreate = async () => {
+    if (!title || !content) return;
+
     await createPost(title, content);
     setTitle("");
     setContent("");
-    fetchPosts();
+
+    fetchPosts(); // reload posts
   };
 
   const handleLike = async (postId) => {
@@ -33,7 +36,7 @@ function Feed() {
       }
     });
 
-    fetchPosts(); // 🔥 reload real data
+    fetchPosts(); // refresh likes
   };
 
   return (
@@ -61,7 +64,6 @@ function Feed() {
       {posts.map(post => (
         <PostCard key={post.id} post={post} onLike={handleLike} />
       ))}
-
     </div>
   );
 }

@@ -1,23 +1,42 @@
 const BASE_URL = "https://fastapi-blog-backend-2y9w.onrender.com";
 
-// 🔥 get comments
+// 🔥 GET COMMENTS
 export const getComments = async (postId) => {
-  const res = await fetch(`${BASE_URL}/comments/${postId}`);
-  return res.json();
+  try {
+    const res = await fetch(`${BASE_URL}/comments/${postId}`);
+
+    if (!res.ok) throw new Error("Failed to fetch comments");
+
+    return await res.json();
+  } catch (error) {
+    console.error("Fetch comments error:", error);
+    return [];
+  }
 };
 
-// 🔥 add comment
+
+// 🔥 ADD COMMENT
 export const addComment = async (postId, content) => {
   const token = localStorage.getItem("token");
 
-  const res = await fetch(`${BASE_URL}/comments/${postId}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token
-    },
-    body: JSON.stringify({ content })
-  });
+  try {
+    const res = await fetch(`${BASE_URL}/comments/${postId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({ content })
+    });
 
-  return res.json();
+    if (!res.ok) {
+      throw new Error("Failed to add comment");
+    }
+
+    return await res.json();
+
+  } catch (error) {
+    console.error("Comment error:", error);
+    return null;
+  }
 };
