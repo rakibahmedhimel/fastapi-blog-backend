@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { getComments, addComment } from "../api/comment";
+import CommentBox from "./CommentBox";
 
 function PostCard({ post, onLike }) {
 
   const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState("");
 
-  // 🔥 load comments
   useEffect(() => {
     const load = async () => {
       const data = await getComments(post.id);
@@ -16,57 +15,42 @@ function PostCard({ post, onLike }) {
     load();
   }, [post.id]);
 
-
-  // 🔥 add comment (FIXED)
-  const handleAddComment = async () => {
-    if (!newComment.trim()) return;
-
-    const newC = await addComment(post.id, newComment);
+  const handleAddComment = async (text) => {
+    const newC = await addComment(post.id, text);
 
     if (newC) {
-      // ✅ instantly update UI (NO refresh needed)
       setComments(prev => [...prev, newC]);
-      setNewComment("");
     }
   };
 
-
   return (
-    <div style={{
-      border: "1px solid gray",
-      margin: "10px",
-      padding: "10px"
-    }}>
+    <div className="post-card">
 
-      <h4>👤 {post.author}</h4>
+      <div className="post-header">
+        <span className="author">👤 {post.author}</span>
+      </div>
+
       <h3>{post.title}</h3>
       <p>{post.content}</p>
 
-      <button onClick={() => onLike(post.id)}>
-        {post.liked_by_user ? "💔 Unlike" : "❤️ Like"}
-      </button>
+      <div className="post-actions">
+        <button className="btn like-btn" onClick={() => onLike(post.id)}>
+          {post.liked_by_user ? "💔 Unlike" : "❤️ Like"}
+        </button>
+        <span className="likes">Likes: {post.likes ?? 0}</span>
+      </div>
 
-      <p>Likes: {post.likes ?? 0}</p>
+      <div className="comments">
+        <h4>💬 Comments</h4>
 
-      <hr />
+        {comments.map(c => (
+          <p key={c.id} className="comment">
+            <b>{c.author}:</b> {c.content}
+          </p>
+        ))}
 
-      <h4>💬 Comments</h4>
-
-      {comments.map(c => (
-        <p key={c.id}>
-          <b>{c.author}:</b> {c.content}
-        </p>
-      ))}
-
-      <input
-        placeholder="Write comment..."
-        value={newComment}
-        onChange={(e) => setNewComment(e.target.value)}
-      />
-
-      <button onClick={handleAddComment}>
-        Add
-      </button>
+        <CommentBox onAdd={handleAddComment} />
+      </div>
 
     </div>
   );

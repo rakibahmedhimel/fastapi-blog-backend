@@ -40,30 +40,43 @@ function Feed() {
   };
 
   return (
-    <div>
-      <h2>Create Post</h2>
+    <div className="container">
 
-      <input
-        placeholder="Title"
-        value={title}
-        onChange={e => setTitle(e.target.value)}
-      />
-      <br />
+      <div className="header">
+        <h1>📚 Batch Feed</h1>
 
-      <textarea
-        placeholder="Content"
-        value={content}
-        onChange={e => setContent(e.target.value)}
-      />
-      <br />
+        <button className="logout" onClick={() => {
+          localStorage.removeItem("token");
+          window.location.reload();
+        }}>
+          Logout
+        </button>
+      </div>
 
-      <button onClick={handleCreate}>Create</button>
+      <div className="create-box">
+        <h3>Create Post</h3>
 
-      <h1>Posts</h1>
+        <input
+          placeholder="Title"
+          value={title}
+          onChange={e => setTitle(e.target.value)}
+        />
+
+        <textarea
+          placeholder="Content"
+          value={content}
+          onChange={e => setContent(e.target.value)}
+        />
+
+        <button className="create-btn" onClick={handleCreate}>
+          Create
+        </button>
+      </div>
 
       {posts.map(post => (
         <PostCard key={post.id} post={post} onLike={handleLike} />
       ))}
+
     </div>
   );
 }
