@@ -66,7 +66,8 @@ def get_comments(post_id: int, db: Session = Depends(get_db)):
             "content": comment.content,
             "user_id": comment.user_id,
             "post_id": comment.post_id,
-            "author": username   # ✅ NEW
+            "author": username,
+            "created_at": comment.created_at
         })
 
     return result

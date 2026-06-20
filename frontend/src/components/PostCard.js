@@ -47,6 +47,7 @@ function PostCard({ post, onLike }) {
         {comments.map(c => (
           <p key={c.id} className="comment">
             <b>{c.author}:</b> {c.content}
+            <p>{c.created_at}</p>
           </p>
         ))}
 
