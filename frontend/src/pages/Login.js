@@ -6,7 +6,8 @@ function Login({ setIsLoggedIn, setShowRegister }) { // ✅ FIX: receive prop
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     const data = await loginUser(email, password);
 
     console.log("LOGIN RESPONSE:", data); // 🔥 DEBUG
@@ -20,7 +21,7 @@ function Login({ setIsLoggedIn, setShowRegister }) { // ✅ FIX: receive prop
   };
 
   return (
-    <div className="auth-box">
+    <form className="auth-box" onSubmit={handleLogin}>
       <h2>Login</h2>
 
       <input
@@ -34,7 +35,7 @@ function Login({ setIsLoggedIn, setShowRegister }) { // ✅ FIX: receive prop
         onChange={e => setPassword(e.target.value)}
       />
 
-      <button onClick={handleLogin}>
+      <button type="submit">
         Login
       </button>
 
@@ -46,7 +47,7 @@ function Login({ setIsLoggedIn, setShowRegister }) { // ✅ FIX: receive prop
         </span>
       </p>
 
-    </div>
+    </form>
   );
 }
 

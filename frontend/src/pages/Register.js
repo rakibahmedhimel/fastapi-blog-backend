@@ -7,7 +7,8 @@ function Register({ setShowRegister }) {
   const [password, setPassword] = useState("");
 
   // 🔥 Register function
-  const handleRegister = async () => {
+  const handleRegister = async (e) => {
+    e.preventDefault();
     try {
       const res = await fetch("https://fastapi-blog-backend-2y9w.onrender.com/register", {
         method: "POST",
@@ -36,7 +37,7 @@ function Register({ setShowRegister }) {
   };
 
   return (
-    <div className="auth-box">
+    <form className="auth-box" onSubmit={handleRegister}>
       <h2>Register</h2>
 
       <input
@@ -58,12 +59,12 @@ function Register({ setShowRegister }) {
         onChange={e => setPassword(e.target.value)}
       />
 
-      <button onClick={handleRegister}>
+      <button type="submit">
         Register
       </button>
 
       
-    </div>
+    </form>
   );
 }
 

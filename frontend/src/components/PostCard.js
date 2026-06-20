@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getComments, addComment } from "../api/comment";
 import CommentBox from "./CommentBox";
+import { formatDistanceToNow } from "date-fns";
 
 function PostCard({ post, onLike }) {
   console.log(post);
@@ -31,7 +32,12 @@ function PostCard({ post, onLike }) {
       </div>
 
       <h3>{post.title}</h3>
-      <p>Posted at : {post.created_at}</p>
+      <p>
+        {formatDistanceToNow(
+          new Date(post.created_at),
+          { addSuffix: true }
+        )}
+      </p>
       <p>{post.content}</p>
 
       <div className="post-actions">
@@ -45,10 +51,17 @@ function PostCard({ post, onLike }) {
         <h4>💬 Comments</h4>
 
         {comments.map(c => (
-          <p key={c.id} className="comment">
-            <b>{c.author}:</b> {c.content}
-            <p>{c.created_at}</p>
-          </p>
+          <div key={c.id}>
+            <b>{c.author}</b>
+            <small>
+              {formatDistanceToNow(
+                new Date(c.created_at),
+                { addSuffix: true }
+              )}
+            </small>
+
+            <p>{c.content}</p>
+          </div>
         ))}
 
         <CommentBox onAdd={handleAddComment} />

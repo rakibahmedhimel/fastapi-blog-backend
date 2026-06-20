@@ -42,7 +42,8 @@ def create_comment(
         "content": new_comment.content,
         "user_id": new_comment.user_id,
         "post_id": new_comment.post_id,
-        "author": user.name
+        "author": user.name,
+        "created_at": new_comment.created_at
     }
 
 

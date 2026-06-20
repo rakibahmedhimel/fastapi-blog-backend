@@ -11,7 +11,11 @@ function CommentBox({ onAdd }) {
   };
 
   return (
-    <div className="comment-box">
+    <form className="comment-box" onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit();
+      }}
+    >
       <input
         className="comment-input"
         placeholder="Write a comment..."
@@ -19,10 +23,10 @@ function CommentBox({ onAdd }) {
         onChange={(e) => setText(e.target.value)}
       />
 
-      <button className="btn comment-btn" onClick={handleSubmit}>
+      <button className="btn comment-btn"  type="submit">
         Add
       </button>
-    </div>
+    </form>
   );
 }
 
