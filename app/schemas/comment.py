@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel
 
 class CommentCreate(BaseModel):
@@ -9,6 +10,6 @@ class CommentOut(BaseModel):
     user_id: int
     post_id: int
     author: str   # ✅ NEW
-
+    created_at: datetime
     class Config:
         from_attributes = True

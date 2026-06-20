@@ -8,7 +8,8 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000",  # React frontend
+    "http://localhost:3000",
+    "https://your-vercel-url.vercel.app"
 ]
 
 app.add_middleware(

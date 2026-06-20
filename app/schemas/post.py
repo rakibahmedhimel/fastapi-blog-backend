@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 from pydantic import BaseModel
 
@@ -13,7 +14,8 @@ class PostOut(BaseModel):
     author: str
     likes: int
     liked_by_user: bool   
-
+    created_at: datetime
+    
     class Config:
         from_attributes = True
 
@@ -22,6 +24,16 @@ class PostListResponse(BaseModel):
     page : int
     limit : int
     data : List[PostOut]
+
+    class Config:
+        from_attributes = True
+
+class UserPostOut(BaseModel):
+    id: int
+    title: str
+    content: str
+    user_id: int
+    created_at: datetime
 
     class Config:
         from_attributes = True

@@ -6,7 +6,7 @@ from app.database import get_db
 from app.models import post as models
 from app.models import like as like_model
 from app.models import user as user_model
-from app.schemas.post import PostCreate, PostOut, PostListResponse
+from app.schemas.post import PostCreate, PostOut, PostListResponse, UserPostOut
 from app.routers.user import get_current_user
 
 router = APIRouter(prefix="/posts", tags=["Posts"])
@@ -47,7 +47,8 @@ def get_all_posts(page: int = 1, limit: int = 10, db: Session = Depends(get_db),
             "user_id": post.user_id,
             "author": username,
             "likes": likes,
-            "liked_by_user": liked_by_user > 0   # ✅ TRUE / FALSE
+            "liked_by_user": liked_by_user > 0,
+            "created_at": post.created_at
         })
 
     return {
@@ -72,10 +73,14 @@ def create_post(post: PostCreate, db: Session = Depends(get_db), user_id: int = 
     return new_post
 
 
-@router.get("/me", response_model=list[PostOut])
-def get_users_posts(db: Session = Depends(get_db), user_id: int = Depends(get_current_user)):
-    user_posts = db.query(models.Post).filter(models.Post.user_id == user_id).all()
-    return user_posts
+@router.get("/me", response_model=list[UserPostOut])
+def get_users_posts(
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+):
+    return db.query(models.Post)\
+             .filter(models.Post.user_id == user_id)\
+             .all()
 
 
 @router.put("/{id}")

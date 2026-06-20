@@ -3,7 +3,7 @@ import { getComments, addComment } from "../api/comment";
 import CommentBox from "./CommentBox";
 
 function PostCard({ post, onLike }) {
-
+  console.log(post);
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
@@ -31,6 +31,7 @@ function PostCard({ post, onLike }) {
       </div>
 
       <h3>{post.title}</h3>
+      <p>Posted at : {post.created_at}</p>
       <p>{post.content}</p>
 
       <div className="post-actions">
@@ -54,6 +55,7 @@ function PostCard({ post, onLike }) {
 
     </div>
   );
+
 }
 
 export default PostCard;
