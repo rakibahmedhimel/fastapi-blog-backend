@@ -146,3 +146,61 @@ button {
   background: #3b82f6;
   color: white;
 }
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 16px 40px;
+
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-logo {
+  font-size: 24px;
+  font-weight: 700;
+  color : black;
+}
+
+.nav-links {
+  display: flex;
+  gap: 12px;
+}
+
+.nav-links button {
+  background: transparent;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.nav-links button:hover {
+  background: #fa0303;
+  transform: translateY(-2px);
+}
+
+.logout-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+
+  padding: 10px 16px;
+  border-radius: 8px;
+
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #130049;
+  opacity: 0.9;
+}

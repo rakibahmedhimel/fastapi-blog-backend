@@ -76,10 +76,20 @@ def user_login(user: Login, db: Session = Depends(get_db)):
 def all_user(db: Session = Depends(get_db)):
   return db.query(models.User).all()
 
-
 @router.get("/users/me")
-def get_me(user_id : int = Depends(get_current_user)):
-  return {"user_id" : user_id }
+def get_me(
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    user = db.query(models.User)\
+             .filter(models.User.id == user_id)\
+             .first()
+
+    return {
+        "id": user.id,
+        "name": user.name,
+        "email": user.email
+    }
 
 @router.get("/users/count")
 def user_count(db: Session = Depends(get_db)):

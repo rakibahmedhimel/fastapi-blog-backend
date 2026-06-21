@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Feed from "./pages/Feed";
+import Navbar from "./components/Navbar";
 import "./App.css";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   const [showRegister, setShowRegister] = useState(false);
 
   return (
@@ -28,15 +38,12 @@ function App() {
         </>
       ) : (
         <>
-          <button
-            className="logout"
-            onClick={() => {
-              localStorage.removeItem("token");
-              setIsLoggedIn(false);
-            }}
-          >
-            Logout
-          </button>
+          <Navbar
+              onLogout={() => {
+                localStorage.removeItem("token");
+                setIsLoggedIn(false);
+              }}
+            />
 
           <Feed />
         </>

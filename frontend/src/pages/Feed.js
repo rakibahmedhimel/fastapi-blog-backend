@@ -45,12 +45,12 @@ function Feed() {
       <div className="header">
         <h1>📚 Batch Feed</h1>
 
-        <button className="logout" onClick={() => {
+        {/* <button className="logout" onClick={() => {
           localStorage.removeItem("token");
           window.location.reload();
         }}>
           Logout
-        </button>
+        </button> */}
       </div>
 
       <div className="create-box">

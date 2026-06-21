@@ -5,12 +5,16 @@ function Login({ setIsLoggedIn, setShowRegister }) { // ✅ FIX: receive prop
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
+
     const data = await loginUser(email, password);
 
-    console.log("LOGIN RESPONSE:", data); // 🔥 DEBUG
+    setLoading(false);
 
     if (data.access_token) {
       localStorage.setItem("token", data.access_token);
@@ -35,9 +39,9 @@ function Login({ setIsLoggedIn, setShowRegister }) { // ✅ FIX: receive prop
         onChange={e => setPassword(e.target.value)}
       />
 
-      <button type="submit">
-        Login
-      </button>
+      <button type="submit" disabled={loading}>
+        {loading ? "Logging in..." : "Login"}
+      </button>      
 
       {/* 🔥 SWITCH TO REGISTER */}
       <p className="switch">
