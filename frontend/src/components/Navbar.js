@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getCurrentUser } from "../api/user";
 
 function Navbar({ onLogout }) {
@@ -13,15 +14,16 @@ function Navbar({ onLogout }) {
       <div className="nav-logo">📚 BatchHub</div>
 
       <div className="nav-links">
-        <button>Feed</button>
+        <Link to="/">Feed</Link>
+        <Link to="/profile">Profile</Link>
+
         <button>Notice Board</button>
         <button>Upcoming Events</button>
         <button>Memories</button>
         <button>Notes</button>
-        <button>Profile</button>
       </div>
 
-      <div>
+      <div className="name">
         👤 {user?.name}
         <button className="logout-btn" onClick={onLogout}>
           Logout

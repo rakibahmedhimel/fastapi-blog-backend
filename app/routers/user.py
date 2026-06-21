@@ -11,6 +11,8 @@ from app.schemas.user import UserResponse, User, Login
 from app.database import get_db
 from app.auth.hashing import hash_password, verify_password
 from app.models import user as models
+from app.models import post as post_model
+from app.models import comment as comment_model
 
 router = APIRouter()
 
@@ -81,14 +83,24 @@ def get_me(
     user_id: int = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    user = db.query(models.User)\
-             .filter(models.User.id == user_id)\
-             .first()
+    user = db.query(models.User).filter(
+        models.User.id == user_id
+    ).first()
+
+    post_count = db.query(post_model.Post).filter(
+        post_model.Post.user_id == user_id
+    ).count()
+
+    comment_count = db.query(comment_model.Comment).filter(
+        comment_model.Comment.user_id == user_id
+    ).count()
 
     return {
         "id": user.id,
         "name": user.name,
-        "email": user.email
+        "email": user.email,
+        "post_count": post_count,
+        "comment_count": comment_count
     }
 
 @router.get("/users/count")

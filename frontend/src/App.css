@@ -166,6 +166,7 @@ button {
   font-size: 24px;
   font-weight: 700;
   color : black;
+  border-spacing: 1cap;
 }
 
 .nav-links {
@@ -196,11 +197,27 @@ button {
 
   padding: 10px 16px;
   border-radius: 8px;
-
+  margin-left: 15px;
   cursor: pointer;
 }
 
 .logout-btn:hover {
   background: #130049;
   opacity: 0.9;
+}
+
+.name{
+  color : black;
+  padding: 16px 40px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: black;
+  padding: 10px 16px;
+  border-radius: 8px;
+}
+
+.nav-links a:hover {
+  background: #f3f4f6;
 }

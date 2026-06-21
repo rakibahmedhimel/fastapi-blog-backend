@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Feed from "./pages/Feed";
 import Navbar from "./components/Navbar";
+import Profile from "./pages/Profile";
 import "./App.css";
 
 function App() {
@@ -38,14 +42,19 @@ function App() {
         </>
       ) : (
         <>
-          <Navbar
+          <BrowserRouter>
+            <Navbar
               onLogout={() => {
                 localStorage.removeItem("token");
                 setIsLoggedIn(false);
               }}
             />
 
-          <Feed />
+            <Routes>
+              <Route path="/" element={<Feed />} />
+              <Route path="/profile" element={<Profile />} />
+            </Routes>
+          </BrowserRouter>
         </>
       )}
 
