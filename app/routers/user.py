@@ -13,6 +13,7 @@ from app.auth.hashing import hash_password, verify_password
 from app.models import user as models
 from app.models import post as post_model
 from app.models import comment as comment_model
+from app.models import like as like_model
 
 router = APIRouter()
 
@@ -95,13 +96,18 @@ def get_me(
         comment_model.Comment.user_id == user_id
     ).count()
 
+    likes_count = db.query(like_model.Like)\
+        .filter(like_model.Like.user_id == user_id)\
+        .count()
+
     return {
         "id": user.id,
         "name": user.name,
         "email": user.email,
         "avatar_url": user.avatar_url,
         "post_count": post_count,
-        "comment_count": comment_count
+        "comment_count": comment_count,
+        "likes_count": likes_count
     }
 
 

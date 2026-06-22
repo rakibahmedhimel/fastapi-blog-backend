@@ -26,3 +26,15 @@ export const createPost = async (title, content) => {
 
   return res.json();
 };
+
+export const getMyPosts = async () => {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(`${BASE_URL}/posts/me`, {
+    headers: {
+      Authorization: "Bearer " + token
+    }
+  });
+
+  return res.json();
+};

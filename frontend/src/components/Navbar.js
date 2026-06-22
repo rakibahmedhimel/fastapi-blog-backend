@@ -20,6 +20,7 @@ function Navbar({ onLogout }) {
         <Link to="/memories">Memories</Link>
         <Link to="/notes">Notes</Link>
         <Link to="/profile">Profile</Link>
+        <Link to="/myposts">My Posts</Link>
       </div>
 
       <div className="name">

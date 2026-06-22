@@ -12,6 +12,7 @@ import NoticeBoard from "./pages/NoticeBoard";
 import Events from "./pages/Events";
 import Memories from "./pages/Memories";
 import Notes from "./pages/Notes";
+import MyPosts from "./pages/MyPosts"
 
 
 
@@ -63,6 +64,7 @@ function App() {
               <Route path="/events" element={<Events />} />
               <Route path="/memories" element={<Memories />} />
               <Route path="/notes" element={<Notes />} />
+              <Route path="/myposts" element={<MyPosts />} />
             </Routes>
           </BrowserRouter>
         </>
