@@ -99,9 +99,28 @@ def get_me(
         "id": user.id,
         "name": user.name,
         "email": user.email,
+        "avatar_url": user.avatar_url,
         "post_count": post_count,
         "comment_count": comment_count
     }
+
+
+@router.put("/users/avatar")
+def update_avatar(
+    avatar_url: str,
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    user = db.query(models.User).filter(
+        models.User.id == user_id
+    ).first()
+
+    user.avatar_url = avatar_url
+
+    db.commit()
+
+    return {"message": "Avatar updated"}
+
 
 @router.get("/users/count")
 def user_count(db: Session = Depends(get_db)):

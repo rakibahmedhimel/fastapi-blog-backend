@@ -8,6 +8,12 @@ import Feed from "./pages/Feed";
 import Navbar from "./components/Navbar";
 import Profile from "./pages/Profile";
 import "./App.css";
+import NoticeBoard from "./pages/NoticeBoard";
+import Events from "./pages/Events";
+import Memories from "./pages/Memories";
+import Notes from "./pages/Notes";
+
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -53,6 +59,10 @@ function App() {
             <Routes>
               <Route path="/" element={<Feed />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/notices" element={<NoticeBoard />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/memories" element={<Memories />} />
+              <Route path="/notes" element={<Notes />} />
             </Routes>
           </BrowserRouter>
         </>

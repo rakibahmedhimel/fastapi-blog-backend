@@ -14,7 +14,14 @@ function Profile() {
   return (
     <div className="profile-card">
       <h2>👤 Profile</h2>
-
+      <img
+        src={
+          user.avatar_url ||
+          "https://i.pravatar.cc/150"
+        }
+        alt="avatar"
+        className="profile-avatar"
+      />
       <p><b>Name:</b> {user.name}</p>
       <p><b>Email:</b> {user.email}</p>
 

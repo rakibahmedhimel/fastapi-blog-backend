@@ -15,12 +15,11 @@ function Navbar({ onLogout }) {
 
       <div className="nav-links">
         <Link to="/">Feed</Link>
+        <Link to="/notices">Notice Board</Link>
+        <Link to="/events">Upcoming Events</Link>
+        <Link to="/memories">Memories</Link>
+        <Link to="/notes">Notes</Link>
         <Link to="/profile">Profile</Link>
-
-        <button>Notice Board</button>
-        <button>Upcoming Events</button>
-        <button>Memories</button>
-        <button>Notes</button>
       </div>
 
       <div className="name">

@@ -40,7 +40,7 @@ function Feed() {
   };
 
   return (
-    <div className="container">
+    <div className="page-container">
 
       <div className="header">
         <h1>📚 Batch Feed</h1>

@@ -219,5 +219,18 @@ button {
 }
 
 .nav-links a:hover {
-  background: #f3f4f6;
+  background: #fa0303;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.page-container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 24px;
 }
