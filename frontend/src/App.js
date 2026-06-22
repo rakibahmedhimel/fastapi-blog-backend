@@ -35,9 +35,12 @@ function App() {
       {!isLoggedIn ? (
         <>
           {showRegister ? (
-            <Register setIsLoggedIn={setIsLoggedIn} />
+            <Register setShowRegister={setShowRegister} />
           ) : (
-            <Login setIsLoggedIn={setIsLoggedIn} setShowRegister={setShowRegister}/>
+            <Login
+              setIsLoggedIn={setIsLoggedIn}
+              setShowRegister={setShowRegister}
+            />
           )}
 
           <p className="switch">

@@ -1,33 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 
-function CommentBox({ onAdd }) {
+const CommentBox = forwardRef(({ onAdd }, ref) => {
   const [text, setText] = useState("");
 
   const handleSubmit = () => {
     if (!text.trim()) return;
 
-    onAdd(text);      // send to parent
-    setText("");      // clear input
+    onAdd(text);
+    setText("");
   };
 
   return (
-    <form className="comment-box" onSubmit={(e) => {
+    <form
+      className="comment-box"
+      onSubmit={(e) => {
         e.preventDefault();
         handleSubmit();
       }}
     >
       <input
+        ref={ref}
         className="comment-input"
         placeholder="Write a comment..."
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
 
-      <button className="btn comment-btn"  type="submit">
+      <button
+        className="btn comment-btn"
+        type="submit"
+      >
         Add
       </button>
     </form>
   );
-}
+});
 
 export default CommentBox;

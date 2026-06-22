@@ -43,13 +43,13 @@ function Login({ setIsLoggedIn, setShowRegister }) { // ✅ FIX: receive prop
         {loading ? "Logging in..." : "Login"}
       </button>      
 
-      {/* 🔥 SWITCH TO REGISTER */}
+      {/* 🔥 SWITCH TO REGISTER
       <p className="switch">
         Don’t have an account?{" "}
         <span onClick={() => setShowRegister(true)}>
           Register
         </span>
-      </p>
+      </p> */}
 
     </form>
   );

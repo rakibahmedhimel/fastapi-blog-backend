@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getComments, addComment } from "../api/comment";
 import CommentBox from "./CommentBox";
-import { formatDistanceToNow } from "date-fns";
+import {format, formatDistanceToNow } from "date-fns";
+
 
 function PostCard({ post, onLike }) {
   console.log(post);
   const [comments, setComments] = useState([]);
+  const [showComments, setShowComments] = useState(false);
+  const commentInputRef = useRef(null);
 
   useEffect(() => {
     const load = async () => {
@@ -21,6 +24,7 @@ function PostCard({ post, onLike }) {
 
     if (newC) {
       setComments(prev => [...prev, newC]);
+      setShowComments(true);
     }
   };
 
@@ -28,45 +32,91 @@ function PostCard({ post, onLike }) {
     <div className="post-card">
 
       <div className="post-header">
-        <span className="author">👤 {post.author}</span>
+
+        <img
+          className="post-avatar"
+          src="https://i.pravatar.cc/150?img=12"
+          alt=""
+        />
+
+        <div>
+          <div className="author">
+            {post.author}
+          </div>
+
+          <div className="post-time">
+            {format(new Date(post.created_at), "PPP p")}
+          </div>
+        </div>
+
       </div>
 
-      <h3>{post.title}</h3>
-      <p>
-        {formatDistanceToNow(
-          new Date(post.created_at),
-          { addSuffix: true }
-        )}
-      </p>
-      <p>{post.content}</p>
+      <div className="post-content">
+        <h3>{post.title}</h3>
+        <p>{post.content}</p>
+      </div>
 
+      
       <div className="post-actions">
-        <button className="btn like-btn" onClick={() => onLike(post.id)}>
-          {post.liked_by_user ? "💔 Unlike" : "❤️ Like"}
-        </button>
-        <span className="likes">Likes: {post.likes ?? 0}</span>
-      </div>
 
+        <button
+          className={`action-btn ${
+            post.liked_by_user ? "liked" : ""
+          }`}
+          onClick={() => onLike(post.id)}
+        >
+          👍 {post.likes ?? 0}
+        </button>
+
+        <button
+          className="action-btn"
+          onClick={() => {
+            const newState = !showComments;
+
+            setShowComments(newState);
+
+            if (newState) {
+              setTimeout(() => {
+                commentInputRef.current?.focus();
+              }, 100);
+            }
+          }}
+        >
+          💬 {comments.length}
+        </button>
+
+      </div>
+      {showComments && (
       <div className="comments">
         <h4>💬 Comments</h4>
 
         {comments.map(c => (
-          <div key={c.id}>
-            <b>{c.author}</b>
-            <small>
+          <div key={c.id} className="comment-card">
+
+            <div className="comment-author">
+              {c.author}
+            </div>
+
+            <div className="comment-time">
               {formatDistanceToNow(
                 new Date(c.created_at),
                 { addSuffix: true }
               )}
-            </small>
+            </div>
 
-            <p>{c.content}</p>
+            <div className="comment-content">
+              {c.content}
+            </div>
+
           </div>
         ))}
 
-        <CommentBox onAdd={handleAddComment} />
+        <CommentBox
+          ref={commentInputRef}
+          onAdd={handleAddComment}
+        />        
       </div>
-
+    )}
     </div>
   );
 
