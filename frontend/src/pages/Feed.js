@@ -6,6 +6,7 @@ function Feed() {
   const [posts, setPosts] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [postUrl, setPostUrl] = useState("");
 
   const fetchPosts = async () => {
     const data = await getPosts();
@@ -18,10 +19,10 @@ function Feed() {
 
   const handleCreate = async () => {
     if (!title || !content) return;
-
-    await createPost(title, content);
+    await createPost(title, content, postUrl);
     setTitle("");
     setContent("");
+    setPostUrl("");
 
     fetchPosts(); // reload posts
   };
@@ -66,6 +67,12 @@ function Feed() {
           placeholder="Content"
           value={content}
           onChange={e => setContent(e.target.value)}
+        />
+
+        <input
+          placeholder="Image URL (optional)"
+          value={postUrl}
+          onChange={(e) => setPostUrl(e.target.value)}
         />
 
         <button className="create-btn" onClick={handleCreate}>

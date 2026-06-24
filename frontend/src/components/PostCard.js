@@ -54,6 +54,13 @@ function PostCard({ post, onLike }) {
       <div className="post-content">
         <h3>{post.title}</h3>
         <p>{post.content}</p>
+        {post.post_url && (
+          <img
+            src={post.post_url}
+            alt="post"
+            className="post-image"
+          />
+        )}        
       </div>
 
       

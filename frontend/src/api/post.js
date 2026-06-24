@@ -12,7 +12,7 @@ export const getPosts = async () => {
   return res.json();
 };
 
-export const createPost = async (title, content) => {
+export const createPost = async (title, content, postUrl) => {
   const token = localStorage.getItem("token");
 
   const res = await fetch(`${BASE_URL}/posts/createpost`, {
@@ -21,7 +21,7 @@ export const createPost = async (title, content) => {
       "Content-Type": "application/json",
       Authorization: "Bearer " + token
     },
-    body: JSON.stringify({ title, content })
+    body: JSON.stringify({ title, content, postUrl })
   });
 
   return res.json();

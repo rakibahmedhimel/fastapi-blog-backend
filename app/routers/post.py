@@ -6,7 +6,7 @@ from app.database import get_db
 from app.models import post as models
 from app.models import like as like_model
 from app.models import user as user_model
-from app.schemas.post import PostCreate, PostOut, PostListResponse, UserPostOut
+from app.schemas.post import PostCreate, PostOut, PostListResponse, PostUpdate, UserPostOut
 from app.routers.user import get_current_user
 
 router = APIRouter(prefix="/posts", tags=["Posts"])
@@ -48,7 +48,8 @@ def get_all_posts(page: int = 1, limit: int = 10, db: Session = Depends(get_db),
             "author": username,
             "likes": likes,
             "liked_by_user": liked_by_user > 0,
-            "created_at": post.created_at
+            "created_at": post.created_at,
+            "post_url" : post.post_url
         })
 
     return {
@@ -64,6 +65,7 @@ def create_post(post: PostCreate, db: Session = Depends(get_db), user_id: int = 
     new_post = models.Post(
         title=post.title,
         content=post.content,
+        post_url = post.post_url,
         user_id=user_id
     )
     db.add(new_post)
@@ -84,7 +86,7 @@ def get_users_posts(
 
 
 @router.put("/{id}")
-def edit_user_post(id: int, updated_post: PostCreate, db: Session = Depends(get_db), user_id: int = Depends(get_current_user)):
+def edit_user_post(id: int, updated_post: PostUpdate, db: Session = Depends(get_db), user_id: int = Depends(get_current_user)):
     post = db.query(models.Post).filter(models.Post.id == id).first()
 
     if not post:
@@ -95,6 +97,7 @@ def edit_user_post(id: int, updated_post: PostCreate, db: Session = Depends(get_
     
     post.title = updated_post.title
     post.content = updated_post.content
+
 
     db.commit()
     db.refresh(post)
@@ -116,3 +119,5 @@ def delete_user_post(id: int, db: Session = Depends(get_db), user_id: int = Depe
     db.commit()
 
     return {"message": "Successfully Deleted"}
+
+

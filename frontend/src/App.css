@@ -178,6 +178,14 @@ button {
   border-radius: 50%;
 }
 
+.post-image {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 12px;
+  max-height: 500px;
+  object-fit: cover;
+}
+
 .author {
   font-weight: 600;
   color: #111827;
