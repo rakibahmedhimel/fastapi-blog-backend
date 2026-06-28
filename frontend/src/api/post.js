@@ -21,7 +21,7 @@ export const createPost = async (title, content, postUrl) => {
       "Content-Type": "application/json",
       Authorization: "Bearer " + token
     },
-    body: JSON.stringify({ title, content, postUrl })
+    body: JSON.stringify({ title, content, post_url: postUrl })
   });
 
   return res.json();

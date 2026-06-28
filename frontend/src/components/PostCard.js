@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { getComments, addComment } from "../api/comment";
 import CommentBox from "./CommentBox";
 import {format, formatDistanceToNow } from "date-fns";
-
+import "../styles/post.css";
 
 function PostCard({ post, onLike }) {
   console.log(post);
@@ -51,16 +51,27 @@ function PostCard({ post, onLike }) {
 
       </div>
 
-      <div className="post-content">
-        <h3>{post.title}</h3>
-        <p>{post.content}</p>
+      <div
+        className={`post-layout ${
+          post.id % 2 === 0 ? "reverse" : ""
+        }`}
+      >
+
         {post.post_url && (
-          <img
-            src={post.post_url}
-            alt="post"
-            className="post-image"
-          />
-        )}        
+          <div className="image-side">
+            <img
+              src={post.post_url}
+              alt="post"
+              className="post-image"
+            />
+          </div>
+        )}
+
+        <div className="content-side">
+          <h3>{post.title}</h3>
+          <p>{post.content}</p>
+        </div>
+
       </div>
 
       

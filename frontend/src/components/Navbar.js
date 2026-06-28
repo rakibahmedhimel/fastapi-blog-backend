@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getCurrentUser } from "../api/user";
+import "../styles/navbar.css";
 
 function Navbar({ onLogout }) {
   const [user, setUser] = useState(null);

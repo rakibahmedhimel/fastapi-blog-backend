@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getNotices, createNotice } from "../api/notice";
+import "../styles/notice.css";
+
 
 function NoticeBoard() {
   const [notices, setNotices] = useState([]);

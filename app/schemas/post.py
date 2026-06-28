@@ -3,8 +3,8 @@ from typing import List
 from pydantic import BaseModel
 
 class PostCreate(BaseModel):
-    title : str
-    content : str
+    title: str | None = None
+    content: str | None = None
     post_url: str | None = None
 
 class PostUpdate(BaseModel):

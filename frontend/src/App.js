@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import "./styles/global.css";
+import "./styles/auth.css";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Feed from "./pages/Feed";
 import Navbar from "./components/Navbar";
 import Profile from "./pages/Profile";
-import "./App.css";
 import NoticeBoard from "./pages/NoticeBoard";
 import Events from "./pages/Events";
 import Memories from "./pages/Memories";

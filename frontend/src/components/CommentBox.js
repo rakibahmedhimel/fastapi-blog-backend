@@ -1,4 +1,6 @@
 import React, { useState, forwardRef } from "react";
+import "../styles/comment.css";
+
 
 const CommentBox = forwardRef(({ onAdd }, ref) => {
   const [text, setText] = useState("");

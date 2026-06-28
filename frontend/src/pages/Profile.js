@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getCurrentUser } from "../api/user";
+import "../styles/profile.css";
 
 function Profile() {
   const [user, setUser] = useState(null);
