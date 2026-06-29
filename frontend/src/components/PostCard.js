@@ -4,11 +4,18 @@ import CommentBox from "./CommentBox";
 import {format, formatDistanceToNow } from "date-fns";
 import "../styles/post.css";
 
+import { FaRegHeart, FaHeart } from "react-icons/fa";
+import { FaRegCommentDots } from "react-icons/fa6";
+//import { BsThreeDots } from "react-icons/bs";
+import { FaShare } from "react-icons/fa";
+import { BsThreeDotsVertical } from "react-icons/bs";
+
 function PostCard({ post, onLike }) {
   console.log(post);
   const [comments, setComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
   const commentInputRef = useRef(null);
+  const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -32,23 +39,44 @@ function PostCard({ post, onLike }) {
     <div className="post-card">
 
       <div className="post-header">
-
-        <img
-          className="post-avatar"
-          src="https://i.pravatar.cc/150?img=12"
-          alt=""
+        <div className="post-user">
+          <img
+            src={post.avatar_url || "/default-avatar.png"}
+            className="post-avatar"
+            alt=""
         />
+          <div>
 
-        <div>
-          <div className="author">
-            {post.author}
-          </div>
+            <div className="author">{post.author}</div>
 
-          <div className="post-time">
-            {format(new Date(post.created_at), "PPP p")}
+            <div className="post-time">
+                {format(new Date(post.created_at),"PPP p")}
+            </div>
+
           </div>
         </div>
+        <div className="menu-wrapper">
 
+                <button
+                    className="more-btn"
+                    onClick={() => setShowMenu(!showMenu)}
+                >
+                    <BsThreeDotsVertical/>
+                </button>
+
+                {showMenu && (
+                    <div className="dropdown-menu">
+
+                        <button>Edit</button>
+
+                        <button className="delete-option">
+                            Delete
+                        </button>
+
+                    </div>
+                )}
+
+        </div>
       </div>
 
       <div
@@ -60,9 +88,9 @@ function PostCard({ post, onLike }) {
         {post.post_url && (
           <div className="image-side">
             <img
-              src={post.post_url}
-              alt="post"
+              src={`https://fastapi-blog-backend-2y9w.onrender.com${post.post_url}`}
               className="post-image"
+              alt=""
             />
           </div>
         )}
@@ -77,64 +105,99 @@ function PostCard({ post, onLike }) {
       
       <div className="post-actions">
 
-        <button
-          className={`action-btn ${
-            post.liked_by_user ? "liked" : ""
-          }`}
-          onClick={() => onLike(post.id)}
-        >
-          👍 {post.likes ?? 0}
-        </button>
+          <button
+              className={`action-btn ${post.liked_by_user ? "liked" : ""}`}
+              onClick={() => onLike(post.id)}
+          >
+              {post.liked_by_user ? <FaHeart/> : <FaRegHeart/>}
+              <span>{post.likes ?? 0}</span>
+          </button>
 
-        <button
-          className="action-btn"
-          onClick={() => {
-            const newState = !showComments;
+          <button
+              className="action-btn"
+              onClick={()=>{
+                  setShowComments(!showComments);
 
-            setShowComments(newState);
+                  setTimeout(()=>{
+                      commentInputRef.current?.focus();
+                  },100);
+              }}
+          >
+              <FaRegCommentDots/>
+              <span>{comments.length}</span>
+          </button>
 
-            if (newState) {
-              setTimeout(() => {
-                commentInputRef.current?.focus();
-              }, 100);
-            }
-          }}
-        >
-          💬 {comments.length}
-        </button>
+          <button className="action-btn">
+              <FaShare/>
+              <span>Share</span>
+          </button>
 
       </div>
+
       {showComments && (
-      <div className="comments">
-        <h4>💬 Comments</h4>
+        <div className="comments">
 
-        {comments.map(c => (
-          <div key={c.id} className="comment-card">
+          <h4 className="comment-title">
+            Comments ({comments.length})
+          </h4>
 
-            <div className="comment-author">
-              {c.author}
+          {comments.map(c => (
+            <div key={c.id} className="comment-card">
+
+              <div className="comment-header">
+
+                <img
+                  src={c.avatar_url || "https://i.pravatar.cc/100"}
+                  className="comment-avatar"
+                  alt=""
+                />
+
+                <div className="comment-user">
+
+                  <div className="comment-author">
+                    {c.author}
+                  </div>
+
+                  <div className="comment-time">
+                    {formatDistanceToNow(
+                      new Date(c.created_at),
+                      { addSuffix: true }
+                    )}
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div className="comment-content">
+                {c.content}
+              </div>
+
+              <div className="comment-actions">
+
+                <button>
+                  <i className="fa-regular fa-heart"></i>
+                  Like
+                </button>
+
+                <button>
+                  <i className="fa-solid fa-reply"></i>
+                  Reply
+                </button>
+
+              </div>
+
             </div>
+          ))}
 
-            <div className="comment-time">
-              {formatDistanceToNow(
-                new Date(c.created_at),
-                { addSuffix: true }
-              )}
-            </div>
+          <CommentBox
+            ref={commentInputRef}
+            onAdd={handleAddComment}
+          />
 
-            <div className="comment-content">
-              {c.content}
-            </div>
-
-          </div>
-        ))}
-
-        <CommentBox
-          ref={commentInputRef}
-          onAdd={handleAddComment}
-        />        
-      </div>
-    )}
+        </div>
+      )}
+      
     </div>
   );
 

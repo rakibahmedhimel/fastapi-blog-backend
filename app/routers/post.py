@@ -1,6 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy import case, desc, func
 from sqlalchemy.orm import Session
+import os
+import shutil
 
 from app.database import get_db
 from app.models import post as models
@@ -61,13 +63,36 @@ def get_all_posts(page: int = 1, limit: int = 10, db: Session = Depends(get_db),
 
 
 @router.post("/createpost")
-def create_post(post: PostCreate, db: Session = Depends(get_db), user_id: int = Depends(get_current_user)):
+async def create_post(
+    title: str = Form(None),
+    content: str = Form(None),
+    image: UploadFile | None = File(None),
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+):
+
+    image_path = None
+
+    if image:
+
+        os.makedirs("uploads", exist_ok=True)
+
+        filename = image.filename
+
+        save_path = f"uploads/{filename}"
+
+        with open(save_path, "wb") as buffer:
+            shutil.copyfileobj(image.file, buffer)
+
+        image_path = "/" + save_path
+
     new_post = models.Post(
-        title=post.title,
-        content=post.content,
-        post_url = post.post_url,
+        title=title,
+        content=content,
+        post_url=image_path,
         user_id=user_id
     )
+
     db.add(new_post)
     db.commit()
     db.refresh(new_post)

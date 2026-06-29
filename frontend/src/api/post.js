@@ -12,19 +12,27 @@ export const getPosts = async () => {
   return res.json();
 };
 
-export const createPost = async (title, content, postUrl) => {
+export const createPost = async (title, content, image) => {
   const token = localStorage.getItem("token");
+
+  const formData = new FormData();
+
+  formData.append("title", title);
+  formData.append("content", content);
+
+  if (image) {
+    formData.append("image", image);
+  }
 
   const res = await fetch(`${BASE_URL}/posts/createpost`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
       Authorization: "Bearer " + token
     },
-    body: JSON.stringify({ title, content, post_url: postUrl })
+    body: formData
   });
 
-  return res.json();
+  return await res.json();
 };
 
 export const getMyPosts = async () => {

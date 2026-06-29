@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef  } from "react";
 import { getPosts, createPost } from "../api/post";
 import PostCard from "../components/PostCard";
 import "../styles/feed.css";
@@ -7,7 +7,8 @@ function Feed() {
   const [posts, setPosts] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [postUrl, setPostUrl] = useState("");
+  const [image, setImage] = useState(null);
+  const fileRef = useRef(null);
 
   const fetchPosts = async () => {
     const data = await getPosts();
@@ -19,13 +20,15 @@ function Feed() {
   }, []);
 
   const handleCreate = async () => {
-    if (!title || !content) return;
-    await createPost(title, content, postUrl);
+    if (!title && !content && !image) return;
+
+    await createPost(title, content, image);
+
     setTitle("");
     setContent("");
-    setPostUrl("");
-
-    fetchPosts(); // reload posts
+    setImage(null);      // ✅ Reset selected image
+    fileRef.current.value = ""; 
+    fetchPosts();
   };
 
   const handleLike = async (postId) => {
@@ -40,19 +43,12 @@ function Feed() {
 
     fetchPosts(); // refresh likes
   };
-
+  
   return (
     <div className="page-container">
 
       <div className="header">
         <h1>📚 Batch Feed</h1>
-
-        {/* <button className="logout" onClick={() => {
-          localStorage.removeItem("token");
-          window.location.reload();
-        }}>
-          Logout
-        </button> */}
       </div>
 
       <div className="create-box">
@@ -71,9 +67,10 @@ function Feed() {
         />
 
         <input
-          placeholder="Image URL (optional)"
-          value={postUrl}
-          onChange={(e) => setPostUrl(e.target.value)}
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            onChange={(e)=>setImage(e.target.files[0])}
         />
 
         <button className="create-btn" onClick={handleCreate}>

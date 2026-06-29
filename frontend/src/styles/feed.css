@@ -18,19 +18,19 @@
    CREATE POST
 ========================== */
 
-.create-box {
-  background: #fff;
-  padding: 24px;
-  border-radius: 16px;
-  margin-bottom: 24px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+.create-box{
+    background:#fff;
+    padding:18px 20px;
+    border-radius:16px;
+    margin-bottom:18px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
 }
 
 .create-box input,
 .create-box textarea {
   width: 100%;
   margin: 10px 0;
-  padding: 12px 14px;
+  padding: 15px 18px;
 
   box-sizing: border-box;
 
@@ -47,7 +47,7 @@
 }
 
 .create-box textarea {
-  min-height: 90px;
+  min-height: 70px;
   resize: vertical;
 }
 
@@ -64,11 +64,11 @@
 }
 
 .create-btn {
-  width: 100%;
-  margin-top: 12px;
-  padding: 12px;
+  width: 20%;
+  margin-top: 8px;
+  padding: 10px;
 
-  background: #22c55e;
+  background: #5f9eeb;
   color: white;
 
   font-size: 15px;
@@ -80,5 +80,9 @@
 }
 
 .create-btn:hover {
-  background: #16a34a;
+  background: #0073ff;
+}
+
+.create-box input{
+    padding:10px 12px;
 }
