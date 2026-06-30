@@ -88,9 +88,9 @@ function PostCard({ post, onLike }) {
         {post.post_url && (
           <div className="image-side">
             <img
-              src={`https://fastapi-blog-backend-2y9w.onrender.com${post.post_url}`}
-              className="post-image"
-              alt=""
+                src={post.post_url}
+                className="post-image"
+                alt={post.title}
             />
           </div>
         )}
