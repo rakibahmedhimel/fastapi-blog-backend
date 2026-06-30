@@ -37,7 +37,7 @@ def get_all_posts(page: int = 1, limit: int = 10, db: Session = Depends(get_db),
     ).outerjoin(
         like_model.Like, like_model.Like.post_id == models.Post.id
     ).group_by(
-        models.Post.id, user_model.User.name
+        models.Post.id, user_model.User.name, user_model.User.avatar_url
     ).order_by(
         desc(models.Post.id)
     ).offset(skip).limit(limit).all()
