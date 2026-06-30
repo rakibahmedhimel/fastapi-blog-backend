@@ -21,6 +21,7 @@ class PostOut(BaseModel):
     likes: int
     liked_by_user: bool   
     created_at: datetime
+    avatar_url: str | None = None
     post_url: str | None 
 
     class Config:

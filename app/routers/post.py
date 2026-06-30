@@ -43,13 +43,14 @@ def get_all_posts(page: int = 1, limit: int = 10, db: Session = Depends(get_db),
 
     result = []
 
-    for post, username, likes, liked_by_user in posts:
+    for post, username, avatar_url, likes, liked_by_user in posts:
         result.append({
             "id": post.id,
             "title": post.title,
             "content": post.content,
             "user_id": post.user_id,
             "author": username,
+            "avatar_url": avatar_url,
             "likes": likes,
             "liked_by_user": liked_by_user > 0,
             "created_at": post.created_at,

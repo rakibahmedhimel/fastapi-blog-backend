@@ -11,3 +11,21 @@ export const getCurrentUser = async () => {
 
   return res.json();
 };
+
+
+export const uploadAvatar = async (image) => {
+    const token = localStorage.getItem("token");
+
+    const formData = new FormData();
+    formData.append("image", image);
+
+    const res = await fetch(`${BASE_URL}/users/avatar`, {
+        method: "PUT",
+        headers: {
+            Authorization: "Bearer " + token
+        },
+        body: formData
+    });
+
+    return res.json();
+};

@@ -1,6 +1,5 @@
 from typing import List
-
-from fastapi import Depends, HTTPException, APIRouter
+from fastapi import Depends, HTTPException, APIRouter, UploadFile, File
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
@@ -14,6 +13,10 @@ from app.models import user as models
 from app.models import post as post_model
 from app.models import comment as comment_model
 from app.models import like as like_model
+
+import cloudinary.uploader
+import app.utils.cloudinary
+
 
 router = APIRouter()
 
@@ -112,20 +115,26 @@ def get_me(
 
 
 @router.put("/users/avatar")
-def update_avatar(
-    avatar_url: str,
-    user_id: int = Depends(get_current_user),
-    db: Session = Depends(get_db)
+async def update_avatar(
+    image: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
 ):
-    user = db.query(models.User).filter(
-        models.User.id == user_id
-    ).first()
+    result = cloudinary.uploader.upload(
+        image.file,
+        folder="batchbook/avatars"
+    )
 
-    user.avatar_url = avatar_url
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+
+    user.avatar_url = result["secure_url"]
 
     db.commit()
+    db.refresh(user)
 
-    return {"message": "Avatar updated"}
+    return {
+        "avatar_url": user.avatar_url
+    }
 
 
 @router.get("/users/count")
