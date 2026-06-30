@@ -25,6 +25,7 @@ def get_all_posts(page: int = 1, limit: int = 10, db: Session = Depends(get_db),
     posts = db.query(
         models.Post,
         user_model.User.name,
+        user_model.User.avatar_url,
         func.count(like_model.Like.post_id).label("likes"),
         func.count(
             case(
